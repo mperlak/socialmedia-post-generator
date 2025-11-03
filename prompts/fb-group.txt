@@ -62,6 +62,7 @@ d) [opcja 4]
 - Długich opisów - grupa lubi konkret
 - Emoji przy każdym punkcie (max 2-3 w całym poście)
 - Hashtagów (grupy FB nie działają na hashtagach!)
+- **Formatowania markdown (**, ##, etc.) - Facebook NIE obsługuje markdown!**
 
 ---
 
@@ -180,10 +181,12 @@ Więcej informacji: [link]
 **Format:**
 
 Kolejność zdjęć:
-1. **Image [X]** - [opis: hero shot / funkcjonalność / detal]
-2. **Image [X]** - [opis]
-3. **Image [X]** - [opis]
-4. **Image [X]** - [opis]
+1. Image [X] - [opis: hero shot / funkcjonalność / detal]
+2. Image [X] - [opis]
+3. Image [X] - [opis]
+4. Image [X] - [opis]
+
+**WAŻNE:** NIE używaj ** (bold/gwiazdek) w treści posta - Facebook nie obsługuje markdown!
 
 ---
 
