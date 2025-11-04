@@ -4,15 +4,67 @@ import type React from "react"
 
 import { useState } from "react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { ArrowLeft, FileText, Upload, ImageIcon, Sparkles, Loader2 } from "lucide-react"
+import { useRouter, useParams, notFound } from "next/navigation"
+import { ArrowLeft, FileText, Upload, ImageIcon, Sparkles, Loader2, Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { toast } from "sonner"
 import { fileToFileData, validatePdf, validateImages, createThumbnail } from "@/lib/file-utils"
 
-export default function FacebookInstagramPage() {
+type PostType = 'fb-ig' | 'fb-group'
+
+interface PageConfig {
+  title: string
+  description: string
+  gradient: string
+  icon: typeof FileText
+  showInfoCard: boolean
+  infoCardContent?: {
+    icon: typeof Users
+    title: string
+    description: string
+    bgColor: string
+    iconColor: string
+  }
+}
+
+const PAGE_CONFIGS: Record<PostType, PageConfig> = {
+  'fb-ig': {
+    title: 'Facebook / Instagram',
+    description: 'Generator postów z emocjonalnym storytellingiem',
+    gradient: 'from-background via-mroomy-beige/20 to-mroomy-powder/30',
+    icon: FileText,
+    showInfoCard: false
+  },
+  'fb-group': {
+    title: 'Grupa Facebook',
+    description: 'Cykl "Mroomy Rozwiązuje" - merytoryczny case study',
+    gradient: 'from-background via-mroomy-blue/10 to-mroomy-green/10',
+    icon: Users,
+    showInfoCard: true,
+    infoCardContent: {
+      icon: Users,
+      title: 'Merytoryczny case study',
+      description: 'Post edukacyjny pokazujący proces projektowania',
+      bgColor: 'from-card to-mroomy-blue/5',
+      iconColor: 'bg-mroomy-blue/10 text-mroomy-blue'
+    }
+  }
+}
+
+export default function GeneratePage() {
+  const params = useParams()
   const router = useRouter()
+  const type = params.type as string
+
+  // Validate type
+  if (!type || !['fb-ig', 'fb-group'].includes(type)) {
+    notFound()
+  }
+
+  const postType = type as PostType
+  const config = PAGE_CONFIGS[postType]
+
   const [selectedType, setSelectedType] = useState<"mroomygo" | "premium" | "premium-plus">("mroomygo")
   const [pdfFile, setPdfFile] = useState<File | null>(null)
   const [images, setImages] = useState<File[]>([])
@@ -134,7 +186,7 @@ export default function FacebookInstagramPage() {
         body: JSON.stringify({
           pdf: pdfData,
           images: imagesData,
-          postType: 'fb-ig',
+          postType,
           projectType: selectedType
         })
       })
@@ -152,7 +204,7 @@ export default function FacebookInstagramPage() {
       sessionStorage.setItem('generatedPost', JSON.stringify({
         post: data.post,
         imageOrder: data.imageOrder,
-        postType: 'fb-ig',
+        postType,
         projectType: selectedType,
         thumbnails,
         generatedAt: data.metadata?.generatedAt || new Date().toISOString()
@@ -168,8 +220,10 @@ export default function FacebookInstagramPage() {
     }
   }
 
+  const HeaderIcon = config.icon
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-mroomy-beige/20 to-mroomy-powder/30">
+    <div className={`min-h-screen bg-gradient-to-br ${config.gradient}`}>
       {/* Header */}
       <header className="border-b border-border/40 bg-card/80 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-6">
@@ -180,8 +234,8 @@ export default function FacebookInstagramPage() {
               </Button>
             </Link>
             <div>
-              <h1 className="font-bold text-2xl text-foreground">Facebook / Instagram</h1>
-              <p className="text-sm text-muted-foreground">Generator postów z emocjonalnym storytellingiem</p>
+              <h1 className="font-bold text-2xl text-foreground">{config.title}</h1>
+              <p className="text-sm text-muted-foreground">{config.description}</p>
             </div>
           </div>
         </div>
@@ -190,6 +244,23 @@ export default function FacebookInstagramPage() {
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-3xl mx-auto space-y-8">
+          {/* Info Card (only for fb-group) */}
+          {config.showInfoCard && config.infoCardContent && (
+            <Card className={`border-2 border-mroomy-blue/30 bg-gradient-to-br ${config.infoCardContent.bgColor}`}>
+              <CardHeader>
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-xl ${config.infoCardContent.iconColor} flex items-center justify-center`}>
+                    <config.infoCardContent.icon className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-xl">{config.infoCardContent.title}</CardTitle>
+                    <CardDescription className="mt-1">{config.infoCardContent.description}</CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+            </Card>
+          )}
+
           {/* Project Type Selection */}
           <Card className="border-2">
             <CardHeader>

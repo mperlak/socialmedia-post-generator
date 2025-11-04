@@ -35,7 +35,7 @@ export default function HomePage() {
           {/* Cards Grid */}
           <div className="grid gap-6 md:grid-cols-2 mb-8">
             {/* Facebook/Instagram Card */}
-            <Link href="/facebook-instagram" className="group">
+            <Link href="/generate/fb-ig" className="group">
               <Card className="h-full transition-all duration-300 hover:shadow-xl hover:scale-[1.02] border-2 hover:border-mroomy-pink/50 bg-gradient-to-br from-card to-mroomy-powder/10">
                 <CardHeader>
                   <div className="w-14 h-14 rounded-2xl bg-mroomy-pink/10 flex items-center justify-center mb-4 group-hover:bg-mroomy-pink/20 transition-colors">
@@ -56,7 +56,7 @@ export default function HomePage() {
             </Link>
 
             {/* Facebook Group Card */}
-            <Link href="/facebook-group" className="group">
+            <Link href="/generate/fb-group" className="group">
               <Card className="h-full transition-all duration-300 hover:shadow-xl hover:scale-[1.02] border-2 hover:border-mroomy-blue/50 bg-gradient-to-br from-card to-mroomy-blue/10">
                 <CardHeader>
                   <div className="w-14 h-14 rounded-2xl bg-mroomy-blue/10 flex items-center justify-center mb-4 group-hover:bg-mroomy-blue/20 transition-colors">
