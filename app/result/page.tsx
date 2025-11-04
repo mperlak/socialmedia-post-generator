@@ -19,6 +19,7 @@ interface ResultData {
 export default function ResultPage() {
   const router = useRouter()
   const [result, setResult] = useState<ResultData | null>(null)
+  const [editedPost, setEditedPost] = useState<string>('')
   const [copied, setCopied] = useState(false)
 
   useEffect(() => {
@@ -32,6 +33,7 @@ export default function ResultPage() {
     try {
       const data = JSON.parse(stored) as ResultData
       setResult(data)
+      setEditedPost(data.post)
     } catch (error) {
       console.error('Failed to parse result:', error)
       toast.error('Błąd ładowania wyniku')
@@ -40,10 +42,10 @@ export default function ResultPage() {
   }, [router])
 
   const copyToClipboard = async () => {
-    if (!result) return
+    if (!editedPost) return
 
     try {
-      await navigator.clipboard.writeText(result.post)
+      await navigator.clipboard.writeText(editedPost)
       setCopied(true)
       toast.success('Skopiowano do schowka!')
       setTimeout(() => setCopied(false), 2000)
@@ -117,9 +119,12 @@ export default function ResultPage() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="bg-muted/30 rounded-xl p-6 whitespace-pre-wrap text-sm max-h-[600px] overflow-y-auto">
-                {result.post}
-              </div>
+              <textarea
+                value={editedPost}
+                onChange={(e) => setEditedPost(e.target.value)}
+                className="w-full bg-muted/30 rounded-xl p-6 text-sm min-h-[600px] resize-y border-2 border-transparent focus:border-mroomy-pink/50 focus:outline-none transition-colors font-sans"
+                placeholder="Wygenerowany post..."
+              />
             </CardContent>
           </Card>
         </div>
