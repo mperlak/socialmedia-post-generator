@@ -203,7 +203,6 @@ export default function GeneratePage() {
       // Store result in sessionStorage and redirect
       sessionStorage.setItem('generatedPost', JSON.stringify({
         post: data.post,
-        imageOrder: data.imageOrder,
         postType,
         projectType: selectedType,
         thumbnails,

@@ -150,17 +150,6 @@ Projekt Premium+ z meblami projektowanymi na wymiar - dopasowanymi idealnie do p
 
 ---
 
-## KOLEJNOŚĆ ZDJĘĆ
-
-**Zawsze podaj rekomendowaną kolejność 4 zdjęć:**
-
-1. **Hero shot** - pełny widok pokoju pokazujący całą przestrzeń i kluczowe elementy
-2. **Funkcjonalność** - widok na biurko/strefę nauki/zabawową
-3. **Detale** - zbliżenie na unikalny element (huśtawka, drabinka, przechowywanie)
-4. **Alternatywna perspektywa** - inny kąt pokazujący dodatkowe elementy
-
----
-
 ## CHECKLIST PRZED PUBLIKACJĄ
 
 ✅ Post nie zawiera linków
@@ -169,7 +158,6 @@ Projekt Premium+ z meblami projektowanymi na wymiar - dopasowanymi idealnie do p
 ✅ Emoji użyte z umiarem (1 na punkt)
 ✅ Konkretne liczby z ankiety użyte
 ✅ Unikalny hook (nie powtarza się z poprzednimi postami)
-✅ Kolejność zdjęć określona
 ✅ Informacja o usłudze (MroomyGO/Premium+) zawarta
 
 ---

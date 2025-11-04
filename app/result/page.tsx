@@ -3,17 +3,13 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { ArrowLeft, Copy, Check, Sparkles } from "lucide-react"
+import { ArrowLeft, Copy, Check } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { toast } from "sonner"
 
 interface ResultData {
   post: string
-  imageOrder: Array<{
-    position: number
-    description: string
-  }>
   postType: string
   projectType: string
   thumbnails: string[] // data URLs
@@ -94,7 +90,7 @@ export default function ResultPage() {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-6">
+        <div className="max-w-4xl mx-auto">
           {/* Post Content */}
           <Card className="border-2">
             <CardHeader>
@@ -126,45 +122,10 @@ export default function ResultPage() {
               </div>
             </CardContent>
           </Card>
-
-          {/* Image Order */}
-          <Card className="border-2">
-            <CardHeader>
-              <CardTitle className="text-xl flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-mroomy-pink" />
-                Sugerowana kolejność zdjęć
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {result.imageOrder.length > 0 ? (
-                  result.imageOrder.map((item, idx) => (
-                    <div
-                      key={idx}
-                      className="bg-muted/30 rounded-xl p-4 flex items-center gap-4"
-                    >
-                      <div className="flex-shrink-0">
-                        <div className="w-12 h-12 rounded-full bg-mroomy-pink text-white flex items-center justify-center font-bold text-lg">
-                          {idx + 1}
-                        </div>
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-sm text-foreground leading-relaxed">{item.description}</p>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-muted-foreground text-sm">
-                    Brak sugerowanej kolejności zdjęć
-                  </p>
-                )}
-              </div>
-            </CardContent>
-          </Card>
         </div>
 
         {/* Actions */}
-        <div className="max-w-6xl mx-auto mt-6 flex gap-4">
+        <div className="max-w-4xl mx-auto mt-6 flex gap-4">
           <Link href="/" className="flex-1">
             <Button
               variant="outline"

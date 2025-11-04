@@ -170,26 +170,7 @@ export function buildUserPrompt(projectType: ProjectType): string {
 
 3. Wygeneruj kompletny post zgodnie z promptem systemowym.
 
-4. **BARDZO WAŻNE - Format odpowiedzi:**
-
-Najpierw podaj treść posta (wszystko co ma być skopiowane do Facebooka/Instagrama).
-
-Następnie dodaj separatorem i sekcję z kolejnością zdjęć:
-
----
-
-## SUGEROWANA KOLEJNOŚĆ ZDJĘĆ:
-
-1. [Krótki opis pierwszego zdjęcia - np. "Hero shot z pełnym widokiem pokoju pokazujący całą przestrzeń"]
-2. [Krótki opis drugiego zdjęcia - np. "Zbliżenie na strefę nauki z biurkiem"]
-3. [Krótki opis trzeciego zdjęcia]
-4. [Krótki opis czwartego zdjęcia]
-
-**Struktura:**
-1. Treść posta (kompletna, bez skrótów)
-2. Separator: ---
-3. Sekcja: ## SUGEROWANA KOLEJNOŚĆ ZDJĘĆ:
-4. Lista ponumerowana z opisami każdego zdjęcia`
+Podaj tylko treść posta (wszystko co ma być skopiowane do Facebooka/Instagrama), bez dodatkowych sekcji czy nagłówków.`
 }
 
 /**
