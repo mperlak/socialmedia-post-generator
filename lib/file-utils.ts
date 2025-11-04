@@ -10,6 +10,14 @@ export interface FileData {
 }
 
 /**
+ * Convert FileData to data URL format for AI SDK
+ * Returns: "data:application/pdf;base64,JVBERi0xLj..."
+ */
+export function fileDataToDataURL(file: FileData): string {
+  return `data:${file.type};base64,${file.data}`
+}
+
+/**
  * Create a small thumbnail for preview (max 400px, quality 0.5)
  * Returns data URL for sessionStorage
  */

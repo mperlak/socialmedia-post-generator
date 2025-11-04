@@ -1,10 +1,12 @@
 /**
- * AI Client for Claude integration using Anthropic SDK
+ * AI Client for Claude integration using AI SDK v5
  * Handles post generation with multimodal input (PDF + images)
  */
 
-import Anthropic from '@anthropic-ai/sdk'
+import { anthropic } from '@ai-sdk/anthropic'
+import { generateText } from 'ai'
 import type { FileData } from './file-utils'
+import { fileDataToDataURL } from './file-utils'
 
 export interface GeneratePostRequest {
   pdf: FileData
@@ -42,67 +44,50 @@ export async function generatePost(
   }
 
   try {
-    // Initialize Anthropic client
-    const client = new Anthropic({
-      apiKey: process.env.ANTHROPIC_API_KEY
-    })
-
-    // Build multimodal content array
-    const content: Anthropic.MessageParam['content'] = [
+    // Build multimodal content array using AI SDK format
+    const contentParts = [
       {
-        type: 'text',
+        type: 'text' as const,
         text: userPrompt
       },
-      // Add PDF
+      // Add PDF as file - AI SDK expects Buffer or data URL string
       {
-        type: 'document',
-        source: {
-          type: 'base64',
-          media_type: pdf.type,
-          data: pdf.data
-        }
+        type: 'file' as const,
+        data: Buffer.from(pdf.data, 'base64'),
+        mediaType: pdf.type
       },
-      // Add images
+      // Add images with data URLs
       ...images.map(img => ({
         type: 'image' as const,
-        source: {
-          type: 'base64' as const,
-          media_type: img.type,
-          data: img.data
-        }
+        image: fileDataToDataURL(img)
       }))
     ]
 
-    // Call Claude API
-    const message = await client.messages.create({
-      model: process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-5-20250929',
-      max_tokens: 4000,
-      temperature: 0.7,
+    // Call Claude API using AI SDK
+    // Note: Using 'content' for multimodal content (PDF + images)
+    const result = await generateText({
+      model: anthropic(process.env.ANTHROPIC_MODEL!),
       system: systemPrompt,
       messages: [
         {
           role: 'user',
-          content
+          content: contentParts
         }
-      ]
+      ],
+      temperature: 0.7,
+      maxTokens: 4000
     })
 
-    // Extract text from response
-    const textContent = message.content.find(block => block.type === 'text')
-    if (!textContent || textContent.type !== 'text') {
-      throw new Error('No text response from Claude')
-    }
-
     // Parse response
-    const { post, imageOrder } = parseResponse(textContent.text)
+    const { post, imageOrder } = parseResponse(result.text)
 
     return {
       post,
       imageOrder,
       usage: {
-        promptTokens: message.usage.input_tokens,
-        completionTokens: message.usage.output_tokens,
-        totalTokens: message.usage.input_tokens + message.usage.output_tokens
+        promptTokens: result.usage.promptTokens,
+        completionTokens: result.usage.completionTokens,
+        totalTokens: result.usage.totalTokens
       }
     }
   } catch (error) {
@@ -194,23 +179,18 @@ function parseImageOrder(text: string): ImageOrderItem[] {
  */
 export async function testConnection(): Promise<boolean> {
   try {
-    const client = new Anthropic({
-      apiKey: process.env.ANTHROPIC_API_KEY || ''
-    })
-
-    const message = await client.messages.create({
-      model: process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-5-20250929',
-      max_tokens: 10,
+    const result = await generateText({
+      model: anthropic(process.env.ANTHROPIC_MODEL!),
       messages: [
         {
           role: 'user',
           content: 'Hello! Please respond with "OK".'
         }
-      ]
+      ],
+      maxTokens: 10
     })
 
-    const textContent = message.content.find(block => block.type === 'text')
-    return textContent?.type === 'text' && textContent.text.includes('OK')
+    return result.text.includes('OK')
   } catch (error) {
     console.error('Claude API test failed:', error)
     return false
