@@ -21,7 +21,7 @@ const GeneratePostSchema = z.object({
       type: z.string(),
       data: z.string() // base64
     })
-  ).min(3).max(7),
+  ).min(3).max(10),
   postType: z.enum(['fb-ig', 'fb-group']),
   projectType: z.enum(['mroomygo', 'premium', 'premium-plus'])
 })

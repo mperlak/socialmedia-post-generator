@@ -359,7 +359,7 @@ export default function GeneratePage() {
           {/* Images Upload */}
           <Card className="border-2">
             <CardHeader>
-              <CardTitle className="text-xl">Wizualizacje pokoju (3-7 zdjęć)</CardTitle>
+              <CardTitle className="text-xl">Wizualizacje pokoju (3-10 zdjęć)</CardTitle>
               <CardDescription>Prześlij zdjęcia wizualizacji w formacie JPG lub PNG</CardDescription>
             </CardHeader>
             <CardContent>
@@ -429,7 +429,7 @@ export default function GeneratePage() {
                         <Upload className="w-6 h-6 text-muted-foreground" />
                       </div>
                       <p className="font-semibold text-foreground">Kliknij lub przeciągnij zdjęcia tutaj</p>
-                      <p className="text-sm text-muted-foreground">JPG, PNG (3-7 plików)</p>
+                      <p className="text-sm text-muted-foreground">JPG, PNG (3-10 plików)</p>
                     </div>
                   </div>
                 </label>

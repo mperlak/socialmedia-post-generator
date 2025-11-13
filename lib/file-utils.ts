@@ -237,8 +237,8 @@ export function validateImages(files: File[]): { valid: boolean; error?: string 
     return { valid: false, error: 'Musisz dodać minimum 3 zdjęcia' }
   }
 
-  if (files.length > 7) {
-    return { valid: false, error: 'Możesz dodać maksymalnie 7 zdjęć' }
+  if (files.length > 10) {
+    return { valid: false, error: 'Możesz dodać maksymalnie 10 zdjęć' }
   }
 
   // Check if all files are images
