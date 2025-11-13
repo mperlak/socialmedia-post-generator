@@ -79,7 +79,7 @@ export async function createThumbnail(file: File): Promise<string> {
 
 /**
  * Compress an image file using Canvas API
- * Reduces dimensions to max 1920px width and compresses to JPEG
+ * Reduces dimensions to max 1400px (optimal for AI analysis) and compresses to JPEG
  */
 export async function compressImage(file: File): Promise<File> {
   return new Promise((resolve, reject) => {
@@ -93,9 +93,10 @@ export async function compressImage(file: File): Promise<File> {
       }
 
       img.onload = () => {
-        // Calculate new dimensions (max 1920px width, maintain aspect ratio)
-        const MAX_WIDTH = 1920
-        const MAX_HEIGHT = 1920
+        // Calculate new dimensions (max 1400px, maintain aspect ratio)
+        // Optimal size for Claude AI vision analysis (1200-1400px recommended)
+        const MAX_WIDTH = 1400
+        const MAX_HEIGHT = 1400
         let width = img.width
         let height = img.height
 
@@ -122,7 +123,7 @@ export async function compressImage(file: File): Promise<File> {
 
         ctx.drawImage(img, 0, 0, width, height)
 
-        // Convert to blob with compression (0.8 quality for JPEG)
+        // Convert to blob with compression (0.7 quality for JPEG - optimal for AI)
         canvas.toBlob(
           (blob) => {
             if (!blob) {
@@ -139,7 +140,7 @@ export async function compressImage(file: File): Promise<File> {
             resolve(compressedFile)
           },
           'image/jpeg',
-          0.8
+          0.7
         )
       }
 

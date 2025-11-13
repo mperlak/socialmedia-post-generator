@@ -177,18 +177,34 @@ export default function GeneratePage() {
       const pdfData = await fileToFileData(pdfFile)
       const imagesData = await Promise.all(images.map(img => fileToFileData(img)))
 
+      // Prepare request body
+      const requestBody = {
+        pdf: pdfData,
+        images: imagesData,
+        postType,
+        projectType: selectedType
+      }
+
+      // Calculate payload size
+      const payloadString = JSON.stringify(requestBody)
+      const payloadSizeBytes = new Blob([payloadString]).size
+      const payloadSizeMB = (payloadSizeBytes / (1024 * 1024)).toFixed(2)
+      
+      console.log('📦 Payload size:', {
+        bytes: payloadSizeBytes.toLocaleString(),
+        mb: `${payloadSizeMB} MB`,
+        imagesCount: imagesData.length,
+        pdfSize: `${(pdfData.data.length / 1024).toFixed(2)} KB`,
+        avgImageSize: `${(imagesData.reduce((sum, img) => sum + img.data.length, 0) / imagesData.length / 1024).toFixed(2)} KB`
+      })
+
       // Call API
       const response = await fetch('/api/generate-post', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          pdf: pdfData,
-          images: imagesData,
-          postType,
-          projectType: selectedType
-        })
+        body: payloadString
       })
 
       const data = await response.json()

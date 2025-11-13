@@ -28,8 +28,35 @@ const GeneratePostSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
+    // Get raw body size before parsing
+    const contentLength = request.headers.get('content-length')
+    const contentLengthMB = contentLength ? (parseInt(contentLength) / (1024 * 1024)).toFixed(2) : 'unknown'
+    
+    console.log('📥 Request received:', {
+      contentLength: contentLength ? `${parseInt(contentLength).toLocaleString()} bytes` : 'unknown',
+      contentLengthMB: `${contentLengthMB} MB`,
+      url: request.url
+    })
+
     // Parse and validate request body
     const body = await request.json()
+    
+    // Log payload details after parsing
+    const imagesCount = Array.isArray(body.images) ? body.images.length : 0
+    const pdfDataSize = body.pdf?.data?.length || 0
+    const totalImagesDataSize = Array.isArray(body.images) 
+      ? body.images.reduce((sum: number, img: any) => sum + (img.data?.length || 0), 0)
+      : 0
+    
+    console.log('📊 Parsed payload details:', {
+      imagesCount,
+      pdfDataSize: `${(pdfDataSize / 1024).toFixed(2)} KB`,
+      totalImagesDataSize: `${(totalImagesDataSize / 1024 / 1024).toFixed(2)} MB`,
+      avgImageDataSize: imagesCount > 0 ? `${(totalImagesDataSize / imagesCount / 1024).toFixed(2)} KB` : '0 KB',
+      postType: body.postType,
+      projectType: body.projectType
+    })
+    
     const validation = GeneratePostSchema.safeParse(body)
 
     if (!validation.success) {
